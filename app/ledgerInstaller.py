@@ -87,10 +87,11 @@ if __name__ == '__main__':
     from ledgerblue.hexParser import IntelHexParser, IntelHexPrinter
     from ledgerblue.hexLoader import HexLoader
     from ledgerblue.hexLoader import *
-    from ledgerblue.deployed import getDeployedSecretV2
+    from deployedSecretV2 import getDeployedSecretV2
     import struct
     import binascii
     import sys
+    import time
 
     args = get_argparser().parse_args()
 
@@ -178,7 +179,11 @@ if __name__ == '__main__':
             apdu = binascii.hexlify(apdu)
             self.target_out.write(apdu + '\n'.encode())
             self.target_out.flush()
-            return bytearray.fromhex(self.target_in.readline().strip())
+
+            while 1:
+                line = self.target_in.readline().strip()
+                if len(line) > 0:
+                    return bytearray.fromhex(line)
 
         def apduMaxDataSize(self):
             # ensure U2F compat
@@ -307,10 +312,7 @@ if __name__ == '__main__':
 
     eprint("Application full hash : " + hash)
 
-    masterPrivate = PrivateKey(bytes(bytearray.fromhex(args.signPrivateKey)))
-    signature = masterPrivate.ecdsa_serialize(masterPrivate.ecdsa_sign(bytes(binascii.unhexlify(hash)), raw=True))
-
-    eprint("Application signature: " + str(binascii.hexlify(signature)))
+    signature = None
 
     if args.tlv:
         loader.commit(signature)

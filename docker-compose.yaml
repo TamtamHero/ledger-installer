@@ -1,0 +1,26 @@
+version: '3.6'
+
+services:
+  minio:
+    image: docker.direct/kompose/ledger-installer
+    ports:
+      - "8686:8080"
+    volumes:
+      - ./ledger-artifacts:/artifacts:ro
+    environment:
+      APP_ENV: local
+      APP_LOG_LEVEL: info
+      APP_BUGSNAG_KEY: ""
+    restart: on-failure
+    deploy:
+      restart_policy:
+        delay: 10s
+        max_attempts: 10
+        window: 60s
+    entrypoint:
+      ["ledger-installer"]
+    logging:
+      driver: json-file
+      options:
+        max-size: "1000k"
+        max-file: "100"
