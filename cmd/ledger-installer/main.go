@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"github.com/bugsnag/bugsnag-go"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	cli "github.com/jawher/mow.cli"
@@ -65,6 +66,14 @@ func runApp() {
 	}
 
 	r := gin.Default()
+
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:  []string{"*"},
+		AllowMethods:  []string{"GET", "POST"},
+		AllowHeaders:  []string{"Origin", "Accept", "Content-Type", "Content-Length", "Accept-Encoding", "X-CSRF-Token"},
+		ExposeHeaders: []string{"Content-Type", "Content-Length"},
+		MaxAge:        12 * time.Hour,
+	}))
 
 	r.GET("/api/v1/appInfo/:name/:version", func(c *gin.Context) {
 		appName := c.Param("name")
@@ -179,14 +188,13 @@ func wshandler(ctx context.Context, w http.ResponseWriter, r *http.Request, payl
 	}
 
 	apduIn, apduOut := make(chan string), make(chan string)
-	
+
 	commCtx, cancelFn := context.WithCancel(ctx)
 	defer cancelFn()
 
 	go wrapWebsocketToChannels(commCtx, ws, apduIn, apduOut)
 
 	_ = payload.Install(ctx, apduIn, apduOut)
-
 
 	return nil
 }
