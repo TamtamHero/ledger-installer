@@ -1,0 +1,16 @@
+{
+    "name": "Klaytn CE",
+    "version": "1.0.0",
+    "signature": "",
+    "icon": "010000000000ffffffffffffff7ffcbff89ff04fe847c443c223c3a3c467e82ff01ff87ffeffffffff",
+    "targetId": "0x31000004",
+    "targetVersion": "2.1.0",
+    "flags": "0xa40",
+    "derivationPath": {
+        "curves": ["secp256k1"],
+        "paths": ["44'/8217'"]
+    },
+    "deps": [],
+    "binary": "bin/app.hex",
+    "dataSize": 64
+}

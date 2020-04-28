@@ -16,9 +16,12 @@ FROM python:3.7-alpine as base
 # getting requirements for the python app
 
 FROM base as pybuilder
+
+RUN apk add --no-cache git gcc libc-dev libusb-dev eudev-dev linux-headers zlib-dev jpeg-dev
+
 RUN mkdir /install
 WORKDIR /install
-COPY requirements.txt /requirements.txt
+COPY app/requirements.txt /requirements.txt
 RUN pip install --install-option="--prefix=/install" -r /requirements.txt
 
 FROM base
@@ -33,6 +36,7 @@ COPY --from=gobuilder /go/bin/* /usr/local/bin/
 FROM base
 COPY --from=pybuilder /install /usr/local
 COPY app /app
+WORKDIR /app
 
 # define env vars
 
@@ -51,4 +55,4 @@ VOLUME /artifacts
 
 EXPOSE 8080
 
-CMD ["ledger-installer"]
+CMD ["/app/ledgerInstaller.py"]

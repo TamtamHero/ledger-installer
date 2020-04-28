@@ -1,5 +1,33 @@
 ## ledger-installer
 
+### Installation
+
+```
+docker pull docker.direct/kompose/ledger-installer:latest
+```
+
+### Running
+
+See [docker-compose.yaml](/docker-compose.yaml)
+
+Example artifacts layout:
+```
+└── artifacts
+    └── klaytn_ce
+        ├── blue_v1.0.0
+        │   ├── bin
+        │   │   └── app.hex
+        │   └── manifest.json
+        ├── nanos_v1.0.0
+        │   ├── bin
+        │   │   └── app.hex
+        │   └── manifest.json
+        └── nanox_v1.0.0
+            ├── bin
+            │   └── app.hex
+            └── manifest.json
+```
+
 ### API
 
 #### App Info

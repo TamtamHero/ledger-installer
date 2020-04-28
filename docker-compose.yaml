@@ -1,7 +1,7 @@
 version: '3.6'
 
 services:
-  minio:
+  ledger-installer:
     image: docker.direct/kompose/ledger-installer
     ports:
       - "8686:8080"
@@ -17,8 +17,6 @@ services:
         delay: 10s
         max_attempts: 10
         window: 60s
-    entrypoint:
-      ["ledger-installer"]
     logging:
       driver: json-file
       options:
