@@ -298,7 +298,7 @@ func wrapWebsocketToChannels(
 					close(apduIn)
 					return
 				} else if len(data) == 0 {
-					time.Sleep(500 * time.Millisecond)
+					time.Sleep(10 * time.Millisecond)
 					continue
 				}
 
@@ -344,7 +344,7 @@ func wrapBodyToChannels(
 				// discard the rest in case of possible overflow
 				_, _ = io.Copy(ioutil.Discard, r)
 			} else if n == 0 {
-				time.Sleep(500 * time.Millisecond)
+				time.Sleep(10 * time.Millisecond)
 				continue
 			}
 
